@@ -1,18 +1,18 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.3/workbox-sw.js');
 
 workbox.precaching.precacheAndRoute([
-  { url: './', revision: '144' },
-  { url: './index.html', revision: '144' },
-  { url: './home.html', revision: '144' },
-  { url: './match.html', revision: '144' },
-  { url: './clubs.html', revision: '144' },
-  { url: './club-detail.html', revision: '144' },
-  { url: './favorite-clubs.html', revision: '144' },
-  { url: './saved-match.html', revision: '144' },
-  { url: './main.js', revision: '144' },
-  { url: './manifest.json', revision: '144' },
-  { url: './images/logo.png', revision: '144' },
-  { url: './images/stadion.jpg', revision: '144' }
+  { url: './', revision: '145' },
+  { url: './index.html', revision: '145' },
+  { url: './home.html', revision: '145' },
+  { url: './match.html', revision: '145' },
+  { url: './clubs.html', revision: '145' },
+  { url: './club-detail.html', revision: '145' },
+  { url: './favorite-clubs.html', revision: '145' },
+  { url: './saved-match.html', revision: '145' },
+  { url: './main.js', revision: '145' },
+  { url: './manifest.json', revision: '145' },
+  { url: './images/logo.png', revision: '145' },
+  { url: './images/stadion.jpg', revision: '145' }
 ],
 { ignoreURLParametersMatching: [/.*/] });
 
@@ -56,6 +56,15 @@ workbox.routing.registerRoute(
   ({url}) => url.origin === 'https://api.football-data.org',
   new workbox.strategies.CacheFirst({
     cacheName: 'football-data',
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponse(({
+        statuses: [0, 200, 404],
+        headers: {
+          'Access-Control-Expose-Headers': 'X-Is-Cacheable',
+          'X-Is-Cacheable': 'yes'
+        }
+      }))
+    ]
   })
 );
 
